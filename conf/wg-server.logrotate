@@ -1,0 +1,12 @@
+/var/log/wg-web-config.log {
+  	su root root
+	daily
+	missingok
+    rotate 60
+	compress
+	create
+	copytruncate
+	dateext
+	dateformat -%Y-%m-%d
+	dateyesterday
+}

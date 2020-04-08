@@ -1,0 +1,27 @@
+# GraphQL Schema
+
+type Peer {
+  id: ID!
+  publicKey: String!
+  name: String!
+  allowedIp: String!
+  endpoint: String
+  latestHandshake: String
+  transferRxBytes: Int
+  transferTxBytes: Int
+}
+
+type Query {
+  peers: [Peer!]!
+  peer(id: ID!): Peer!
+}
+
+input NewPeer {
+  name: String!
+  publicKey: String!
+  allowedIp: String!
+}
+
+type Mutation {
+  createPeer(input: NewPeer!): Peer!
+}
