@@ -1,0 +1,29 @@
+{
+  "name": "wireguard-config-client",
+  "version": "0.1.0",
+  "description": "A wireguard peer configuration client",
+  "main": "index.js",
+  "author": "ngutzmann",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@types/react": "^16.9.33",
+    "less": "^3.11.1",
+    "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@ant-design/colors": "^4.0.0",
+    "@ant-design/icons": "^4.0.5",
+    "@apollo/react-hooks": "^3.1.4",
+    "antd": "^4.1.1",
+    "apollo-boost": "^0.4.7",
+    "graphql": "^15.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "scripts": {
+    "start": "parcel src/index.html"
+  }
+}

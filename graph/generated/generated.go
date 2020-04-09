@@ -246,7 +246,7 @@ type Peer {
   name: String!
   allowedIp: String!
   endpoint: String
-  latestHandshake: String
+  latestHandshake: Int
   transferRxBytes: Int
   transferTxBytes: Int
 }
@@ -264,7 +264,8 @@ input NewPeer {
 
 type Mutation {
   createPeer(input: NewPeer!): Peer!
-}`, BuiltIn: false},
+}
+`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
@@ -584,9 +585,9 @@ func (ec *executionContext) _Peer_latestHandshake(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(*int)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Peer_transferRxBytes(ctx context.Context, field graphql.CollectedField, obj *model.Peer) (ret graphql.Marshaler) {

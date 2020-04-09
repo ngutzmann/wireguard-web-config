@@ -14,7 +14,7 @@ type Peer struct {
 	Name            string  `json:"name"`
 	AllowedIP       string  `json:"allowedIp"`
 	Endpoint        *string `json:"endpoint"`
-	LatestHandshake *string `json:"latestHandshake"`
+	LatestHandshake *int    `json:"latestHandshake"`
 	TransferRxBytes *int    `json:"transferRxBytes"`
 	TransferTxBytes *int    `json:"transferTxBytes"`
 }

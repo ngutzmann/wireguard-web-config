@@ -23,7 +23,7 @@ type wgPeer struct {
 	PublicKey       string
 	Endpoint        *string
 	AllowedIP       string
-	LatestHandshake *string
+	LatestHandshake *int
 	TransferRx      *int
 	TransferTx      *int
 }
@@ -63,11 +63,12 @@ func readWgConfig(ctx context.Context) (map[string]wgPeer, error) {
 
 		transferRx, _ := strconv.Atoi(tokens[5])
 		transferTx, _ := strconv.Atoi(tokens[6])
+		latestHandshake, _ := strconv.Atoi(tokens[4])
 		peerMap[tokens[0]] = wgPeer{
 			PublicKey:       tokens[0],
 			Endpoint:        &tokens[2],
 			AllowedIP:       tokens[3],
-			LatestHandshake: &tokens[4],
+			LatestHandshake: &latestHandshake,
 			TransferRx:      &transferRx,
 			TransferTx:      &transferTx,
 		}

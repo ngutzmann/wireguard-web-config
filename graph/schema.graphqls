@@ -6,7 +6,7 @@ type Peer {
   name: String!
   allowedIp: String!
   endpoint: String
-  latestHandshake: String
+  latestHandshake: Int
   transferRxBytes: Int
   transferTxBytes: Int
 }
