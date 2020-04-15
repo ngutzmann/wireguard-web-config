@@ -1,10 +1,8 @@
 import * as React from 'react'
 import { Table, Input, Button, Row, Col } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/react-hooks'
 import gql from "graphql-tag"
-
+import { Link } from "react-router-dom"
 import { Peer } from "./ServerTypes"
 
 const initialState = {
@@ -69,12 +67,23 @@ export function PeersTable() {
             { title: "Transmitted Bytes", dataIndex: "transferTxBytes", key: "transferTxBytes", render: (bytes: number) => formatBytes(bytes) },
         ]
 
-        children = <Table dataSource={peers} columns={columns} />
+        children = <>
+            <Row justify="end">
+                <Col span={1}><h1>Peers: </h1></Col>
+                <Col span={2} offset={21}>
+                    <Link to="/add-peer">
+                        <Button>
+                            Add Peer
+                        </Button>
+                    </Link>
+                </Col>
+            </Row>
+            <Table dataSource={peers} columns={columns} pagination={false} rowKey="publicKey" />
+        </>
     }
     return (
         <Row style={{ marginTop: 20 }}>
             <Col span={20} offset={2}>
-                <h1>Peers: </h1>
                 {children}
             </Col>
         </Row>
