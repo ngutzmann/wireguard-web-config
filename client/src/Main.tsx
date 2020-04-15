@@ -19,12 +19,13 @@ export const apolloClient = new ApolloClient({
 
 export const Main = () => {
 
+  const serverName = process.env.SERVER_NAME || "Wireguard Server"
   return (
     <ApolloProvider client={apolloClient}>
       <Router>
         <Layout className="layout">
           <Header>
-            <h1 style={{ color: grey[0] }}>Personal AWS Wireguard Server</h1>
+            <h1 style={{ color: grey[0] }}>{serverName}</h1>
             <Menu theme="dark" mode="horizontal">
             </Menu>
           </Header>
