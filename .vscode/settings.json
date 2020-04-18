@@ -1,12 +1,13 @@
 {
-    "go.buildOnSave": "workspace",
-    "editor.formatOnSave": true,
-    "files.encoding": "utf8",
-    "files.trimTrailingWhitespace": true,
-    "files.insertFinalNewline": true,
-    "search.exclude": {
-      "build/**": true,
-      "node_modules/**": true
-    },
-    "typescript.tsdk": "client/node_modules/typescript/lib"
+  "go.buildOnSave": "workspace",
+  "editor.formatOnSave": true,
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "search.exclude": {
+    "build/**": true,
+    "node_modules/**": true
+  },
+  "typescript.tsdk": "client/node_modules/typescript/lib",
+  "eslint.workingDirectories": ["client"]
 }

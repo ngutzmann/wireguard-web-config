@@ -2,6 +2,8 @@
   "recommendations": [
     "ms-vscode.go",
     "kumar-harsh.graphql-for-vscode",
-    "ms-azuretools.vscode-docker"
+    "ms-azuretools.vscode-docker",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
   ]
 }

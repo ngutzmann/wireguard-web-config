@@ -1,20 +1,20 @@
 export interface Peer {
-    id: string
-    publicKey: string
-    userFName?: string
-    userLName?: string
-    hostname: string
-    allowedIp: string
-    endpoint?: string
-    latestHandshake?: number
-    transferRxBytes?: number
-    transferTxBytes?: number
+  readonly id: string
+  readonly publicKey: string
+  readonly userFName?: string
+  readonly userLName?: string
+  readonly hostname: string
+  readonly allowedIp: string
+  readonly endpoint?: string
+  readonly latestHandshake?: number
+  readonly transferRxBytes?: number
+  readonly transferTxBytes?: number
 }
 
 export interface NewPeer {
-    userFName?: string
-    userLName?: string
-    hostname: string
-    publicKey: string
-    allowedIp: string
+  readonly userFName?: string
+  readonly userLName?: string
+  readonly hostname: string
+  readonly publicKey: string
+  readonly allowedIp: string
 }
