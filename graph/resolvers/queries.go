@@ -11,7 +11,7 @@ import (
 // GetPeers - get all the peers
 func GetPeers(ctx context.Context, db *sql.DB) ([]*model.Peer, error) {
 	var peers []*model.Peer
-	rows, err := db.QueryContext(ctx, "SELECT id, name, public_key, allowed_ip FROM peers")
+	rows, err := db.QueryContext(ctx, "SELECT id, user_f_name, user_l_name, hostname, public_key, allowed_ip FROM peers")
 	if err != nil {
 		log.Println("Error querying peers in DB:", err)
 		return nil, err
@@ -19,14 +19,16 @@ func GetPeers(ctx context.Context, db *sql.DB) ([]*model.Peer, error) {
 	defer rows.Close()
 	var (
 		id        string
-		name      string
+		userFName *string
+		userLName *string
+		hostname  string
 		publicKey string
 		allowedIP string
 	)
 
 	peerMap, err := readWgConfig(ctx)
 	for rows.Next() {
-		err := rows.Scan(&id, &name, &publicKey, &allowedIP)
+		err := rows.Scan(&id, &userFName, &userLName, &hostname, &publicKey, &allowedIP)
 		if err != nil {
 			log.Println("Error reading row from `peers` table: ", err)
 			return nil, err
@@ -35,7 +37,9 @@ func GetPeers(ctx context.Context, db *sql.DB) ([]*model.Peer, error) {
 		wgPeer := peerMap[publicKey]
 		peer := &model.Peer{
 			ID:              id,
-			Name:            name,
+			UserFName:       userFName,
+			UserLName:       userLName,
+			Hostname:        hostname,
 			PublicKey:       publicKey,
 			AllowedIP:       allowedIP,
 			Endpoint:        wgPeer.Endpoint,
@@ -51,21 +55,23 @@ func GetPeers(ctx context.Context, db *sql.DB) ([]*model.Peer, error) {
 // GetPeer - Get a single peer based on the ID
 func GetPeer(ctx context.Context, db *sql.DB, id string) (*model.Peer, error) {
 	var peer *model.Peer
-	rows, err := db.QueryContext(ctx, "SELECT id, name, public_key, allowed_ip FROM peers WHERE id=$1", id)
+	rows, err := db.QueryContext(ctx, "SELECT id, user_f_name, user_l_name, hostname, public_key, allowed_ip FROM peers WHERE id=$1", id)
 	if err != nil {
 		log.Println("Error querying peers in DB:", err)
 		return nil, err
 	}
 	defer rows.Close()
 	var (
-		name      string
+		userFName *string
+		userLName *string
+		hostname  string
 		publicKey string
 		allowedIP string
 	)
 
 	peerMap, err := readWgConfig(ctx)
 	for rows.Next() {
-		err := rows.Scan(&id, &name, &publicKey, &allowedIP)
+		err := rows.Scan(&id, &userFName, &userLName, &hostname, &publicKey, &allowedIP)
 		if err != nil {
 			log.Println("Error reading row from `peers` table: ", err)
 			return nil, err
@@ -74,7 +80,9 @@ func GetPeer(ctx context.Context, db *sql.DB, id string) (*model.Peer, error) {
 		wgPeer := peerMap[publicKey]
 		peer = &model.Peer{
 			ID:              id,
-			Name:            name,
+			UserFName:       userFName,
+			UserLName:       userLName,
+			Hostname:        hostname,
 			PublicKey:       publicKey,
 			AllowedIP:       allowedIP,
 			Endpoint:        wgPeer.Endpoint,

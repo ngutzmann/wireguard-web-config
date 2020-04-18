@@ -16,7 +16,9 @@ interface PeersData {
 const GET_PEERS = gql`
 {
     peers {
-        name,
+        hostname,
+        userFName,
+        userLName,
         latestHandshake,
         id,
         publicKey,
@@ -48,6 +50,13 @@ function formatDate(seconds: number) {
     const d = new Date(seconds * 1000)
     return d.toLocaleString()
 }
+
+function formatUserName(firstName?: string, lastName?: string): string {
+    if (firstName === null && lastName === null) return ""
+    if (firstName === null) return lastName
+    if (lastName === null) return firstName
+    return `${firstName} ${lastName}`
+}
 export function PeersTable() {
 
     let children: React.ReactChild = null
@@ -58,7 +67,8 @@ export function PeersTable() {
     else {
         const { peers } = data
         const columns = [
-            { title: "Name", dataIndex: "name", key: "name" },
+            { title: "Hostname", dataIndex: "hostname", key: "hostname" },
+            { title: "User Name", dataIndex: "username", key: "username", render: (_, record: Peer) => formatUserName(record.userFName, record.userLName) },
             { title: "Public Key", dataIndex: "publicKey", key: "publicKey" },
             { title: "IP Address", dataIndex: "allowedIp", key: "allowedIp" },
             { title: "Endpoint", dataIndex: "endpoint", key: "endpoint" },

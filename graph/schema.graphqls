@@ -1,9 +1,11 @@
 # GraphQL Schema
 
 type Peer {
+  userFName: String
+  userLName: String
   id: ID!
   publicKey: String!
-  name: String!
+  hostname: String!
   allowedIp: String!
   endpoint: String
   latestHandshake: Int
@@ -17,7 +19,9 @@ type Query {
 }
 
 input NewPeer {
-  name: String!
+  userFName: String
+  userLName: String
+  hostname: String!
   publicKey: String!
   allowedIp: String!
 }

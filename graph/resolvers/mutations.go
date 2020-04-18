@@ -15,7 +15,7 @@ import (
 // CreatePeer - Add a peer to the server
 func CreatePeer(ctx context.Context, db *sql.DB, input model.NewPeer) (*model.Peer, error) {
 	id := uuid.New()
-	_, err := db.ExecContext(ctx, "INSERT INTO peers (id, name, public_key, allowed_ip) VALUES ($1, $2, $3, $4)", id, input.Name, input.PublicKey, input.AllowedIP)
+	_, err := db.ExecContext(ctx, "INSERT INTO peers (id, user_f_name, user_l_name, hostname, public_key, allowed_ip) VALUES ($1, $2, $3, $4, $5, $6)", id, input.UserFName, input.UserLName, input.Hostname, input.PublicKey, input.AllowedIP)
 
 	if err != nil {
 		log.Println("Failed to create peer entry in DB:", err)
@@ -24,7 +24,9 @@ func CreatePeer(ctx context.Context, db *sql.DB, input model.NewPeer) (*model.Pe
 
 	peer := &model.Peer{
 		ID:        id.String(),
-		Name:      input.Name,
+		UserFName: input.UserFName,
+		UserLName: input.UserLName,
+		Hostname:  input.Hostname,
 		PublicKey: input.PublicKey,
 		AllowedIP: input.AllowedIP,
 	}

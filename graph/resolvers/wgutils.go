@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -30,8 +29,9 @@ func getWGInterface() string {
 // readWgConfig - Read Wireguard config and stats
 func readWgConfig(ctx context.Context) (map[string]wgPeer, error) {
 
-	cmdText := strings.Split(fmt.Sprintf("wg show %s dump", getWGInterface()), " ")
-	cmd := exec.CommandContext(ctx, "sudo", cmdText...)
+	// cmdText := strings.Split(fmt.Sprintf("wg show %s dump", getWGInterface()), " ")
+	// cmd := exec.CommandContext(ctx, "sudo", cmdText...)
+	cmd := exec.CommandContext(ctx, "cat", "wgshow.txt")
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	err := cmd.Run()

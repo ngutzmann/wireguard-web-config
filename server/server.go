@@ -78,7 +78,9 @@ func playgroundHandler() gin.HandlerFunc {
 func initDB() *sql.DB {
 	var createPeersTable string = `CREATE TABLE IF NOT EXISTS peers (
 		id UUID PRIMARY KEY,
-		name VARCHAR(256) NOT NULL,
+		user_f_name VARCHAR(256),
+		user_l_name VARCHAR(256),
+		hostname VARCHAR(256) NOT NULL,
 		public_key VARCHAR(256) NOT NULL,
 		allowed_ip inet NOT NULL,
 		created_on TIMESTAMP NOT NULL default current_timestamp

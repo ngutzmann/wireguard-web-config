@@ -17,9 +17,9 @@ export function AddPeerForm() {
     const history = useHistory()
 
     async function onFinish(values) {
-        const { hostname, publicKey, ipAddress } = values
+        const { hostname, publicKey, ipAddress, userLName, userFName } = values
         try {
-            await createPeer({ variables: { input: { name: hostname, publicKey, allowedIp: ipAddress } } })
+            await createPeer({ variables: { input: { hostname, userFName, userLName, publicKey, allowedIp: ipAddress } } })
             history.push('/')
         }
         catch (e) {
@@ -47,6 +47,22 @@ export function AddPeerForm() {
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
                 >
+                    <Form.Item
+                        label="First Name"
+                        name="userFName"
+                        rules={[{ required: false, message: 'Please input your first name!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Last Name"
+                        name="userLName"
+                        rules={[{ required: false, message: 'Please input your last name!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
                     <Form.Item
                         label="Hostname"
                         name="hostname"

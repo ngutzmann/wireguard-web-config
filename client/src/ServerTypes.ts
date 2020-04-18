@@ -1,7 +1,9 @@
 export interface Peer {
     id: string
     publicKey: string
-    name: string
+    userFName?: string
+    userLName?: string
+    hostname: string
     allowedIp: string
     endpoint?: string
     latestHandshake?: number
@@ -10,7 +12,9 @@ export interface Peer {
 }
 
 export interface NewPeer {
-    name: string
+    userFName?: string
+    userLName?: string
+    hostname: string
     publicKey: string
     allowedIp: string
 }

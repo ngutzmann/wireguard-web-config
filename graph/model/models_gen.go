@@ -3,15 +3,19 @@
 package model
 
 type NewPeer struct {
-	Name      string `json:"name"`
-	PublicKey string `json:"publicKey"`
-	AllowedIP string `json:"allowedIp"`
+	UserFName *string `json:"userFName"`
+	UserLName *string `json:"userLName"`
+	Hostname  string  `json:"hostname"`
+	PublicKey string  `json:"publicKey"`
+	AllowedIP string  `json:"allowedIp"`
 }
 
 type Peer struct {
+	UserFName       *string `json:"userFName"`
+	UserLName       *string `json:"userLName"`
 	ID              string  `json:"id"`
 	PublicKey       string  `json:"publicKey"`
-	Name            string  `json:"name"`
+	Hostname        string  `json:"hostname"`
 	AllowedIP       string  `json:"allowedIp"`
 	Endpoint        *string `json:"endpoint"`
 	LatestHandshake *int    `json:"latestHandshake"`

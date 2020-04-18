@@ -50,12 +50,14 @@ type ComplexityRoot struct {
 	Peer struct {
 		AllowedIP       func(childComplexity int) int
 		Endpoint        func(childComplexity int) int
+		Hostname        func(childComplexity int) int
 		ID              func(childComplexity int) int
 		LatestHandshake func(childComplexity int) int
-		Name            func(childComplexity int) int
 		PublicKey       func(childComplexity int) int
 		TransferRxBytes func(childComplexity int) int
 		TransferTxBytes func(childComplexity int) int
+		UserFName       func(childComplexity int) int
+		UserLName       func(childComplexity int) int
 	}
 
 	Query struct {
@@ -113,6 +115,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Peer.Endpoint(childComplexity), true
 
+	case "Peer.hostname":
+		if e.complexity.Peer.Hostname == nil {
+			break
+		}
+
+		return e.complexity.Peer.Hostname(childComplexity), true
+
 	case "Peer.id":
 		if e.complexity.Peer.ID == nil {
 			break
@@ -126,13 +135,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Peer.LatestHandshake(childComplexity), true
-
-	case "Peer.name":
-		if e.complexity.Peer.Name == nil {
-			break
-		}
-
-		return e.complexity.Peer.Name(childComplexity), true
 
 	case "Peer.publicKey":
 		if e.complexity.Peer.PublicKey == nil {
@@ -154,6 +156,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Peer.TransferTxBytes(childComplexity), true
+
+	case "Peer.userFName":
+		if e.complexity.Peer.UserFName == nil {
+			break
+		}
+
+		return e.complexity.Peer.UserFName(childComplexity), true
+
+	case "Peer.userLName":
+		if e.complexity.Peer.UserLName == nil {
+			break
+		}
+
+		return e.complexity.Peer.UserLName(childComplexity), true
 
 	case "Query.peer":
 		if e.complexity.Query.Peer == nil {
@@ -241,9 +257,11 @@ var sources = []*ast.Source{
 	&ast.Source{Name: "graph/schema.graphqls", Input: `# GraphQL Schema
 
 type Peer {
+  userFName: String
+  userLName: String
   id: ID!
   publicKey: String!
-  name: String!
+  hostname: String!
   allowedIp: String!
   endpoint: String
   latestHandshake: Int
@@ -257,7 +275,9 @@ type Query {
 }
 
 input NewPeer {
-  name: String!
+  userFName: String
+  userLName: String
+  hostname: String!
   publicKey: String!
   allowedIp: String!
 }
@@ -392,6 +412,68 @@ func (ec *executionContext) _Mutation_createPeer(ctx context.Context, field grap
 	return ec.marshalNPeer2ᚖgithubᚗcomᚋngutzmannᚋwireguardᚑwebᚑconfigᚋgraphᚋmodelᚐPeer(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Peer_userFName(ctx context.Context, field graphql.CollectedField, obj *model.Peer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Peer",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UserFName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Peer_userLName(ctx context.Context, field graphql.CollectedField, obj *model.Peer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Peer",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UserLName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Peer_id(ctx context.Context, field graphql.CollectedField, obj *model.Peer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -460,7 +542,7 @@ func (ec *executionContext) _Peer_publicKey(ctx context.Context, field graphql.C
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Peer_name(ctx context.Context, field graphql.CollectedField, obj *model.Peer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Peer_hostname(ctx context.Context, field graphql.CollectedField, obj *model.Peer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -477,7 +559,7 @@ func (ec *executionContext) _Peer_name(ctx context.Context, field graphql.Collec
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
+		return obj.Hostname, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1857,9 +1939,21 @@ func (ec *executionContext) unmarshalInputNewPeer(ctx context.Context, obj inter
 
 	for k, v := range asMap {
 		switch k {
-		case "name":
+		case "userFName":
 			var err error
-			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			it.UserFName, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "userLName":
+			var err error
+			it.UserLName, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hostname":
+			var err error
+			it.Hostname, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -1931,6 +2025,10 @@ func (ec *executionContext) _Peer(ctx context.Context, sel ast.SelectionSet, obj
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Peer")
+		case "userFName":
+			out.Values[i] = ec._Peer_userFName(ctx, field, obj)
+		case "userLName":
+			out.Values[i] = ec._Peer_userLName(ctx, field, obj)
 		case "id":
 			out.Values[i] = ec._Peer_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -1941,8 +2039,8 @@ func (ec *executionContext) _Peer(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "name":
-			out.Values[i] = ec._Peer_name(ctx, field, obj)
+		case "hostname":
+			out.Values[i] = ec._Peer_hostname(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
