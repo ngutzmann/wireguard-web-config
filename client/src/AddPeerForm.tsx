@@ -11,6 +11,30 @@ const CREATE_PEER = gql`
         }
     }`
 
+const WG_KEY_LEN = 32
+
+function validatePublicKey(publicKey: string): Promise<void> {
+    try {
+        const byteStr = atob(publicKey)
+        if (byteStr.length != WG_KEY_LEN) {
+            return Promise.reject("Public key is incorrect length")
+        }
+    }
+    catch {
+        return Promise.reject("Unable to decode public key")
+    }
+    return Promise.resolve()
+}
+
+function validateIPAddress(ipAddress: string): Promise<void> {
+    const blocks = ipAddress.split('.')
+    if (blocks.length != 4) return Promise.reject("Invalid IP address block length")
+    for (const b of blocks) {
+        if (!Number(b) || 0) return Promise.reject(`Invalid IP address block ${b}`)
+    }
+    return Promise.resolve()
+}
+
 export function AddPeerForm() {
 
     const [createPeer] = useMutation(CREATE_PEER)
@@ -74,7 +98,14 @@ export function AddPeerForm() {
                     <Form.Item
                         label="Public Key"
                         name="publicKey"
-                        rules={[{ required: true, message: 'Please input the system public key!' }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input the system public key!',
+                                validator: (_, value) => validatePublicKey(value)
+                            },
+
+                        ]}
                     >
                         <Input />
                     </Form.Item>
@@ -82,7 +113,11 @@ export function AddPeerForm() {
                     <Form.Item
                         label="IP Address"
                         name="ipAddress"
-                        rules={[{ required: true, message: 'Please input the system IP!' }]}
+                        rules={[{
+                            required: true,
+                            message: 'Please input the system IP!',
+                            validator: (_, value) => validateIPAddress(value)
+                        }]}
                     >
                         <Input />
                     </Form.Item>
