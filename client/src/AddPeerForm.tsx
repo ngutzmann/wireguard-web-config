@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Row, Col, Form, Input, Button } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import gql from 'graphql-tag'
@@ -13,6 +13,7 @@ const CREATE_PEER = gql`
 `
 
 const WG_KEY_LEN = 32
+const IP_BLOCKS = 4
 
 function validatePublicKey(publicKey: string): Promise<void> {
   try {
@@ -28,19 +29,19 @@ function validatePublicKey(publicKey: string): Promise<void> {
 
 function validateIPAddress(ipAddress: string): Promise<void> {
   const blocks = ipAddress.split('.')
-  if (blocks.length != 4)
+  if (blocks.length != IP_BLOCKS)
     return Promise.reject('Invalid IP address block length')
   for (const b of blocks) {
-    if (!Number(b) || 0) return Promise.reject(`Invalid IP address block ${b}`)
+    if (!Number(b)) return Promise.reject(`Invalid IP address block ${b}`)
   }
   return Promise.resolve()
 }
 
-export function AddPeerForm() {
+export const AddPeerForm: React.FC = () => {
   const [createPeer] = useMutation(CREATE_PEER)
   const history = useHistory()
 
-  async function onFinish(values) {
+  async function onFinish(values): Promise<void> {
     const { hostname, publicKey, ipAddress, userLName, userFName } = values
     try {
       await createPeer({

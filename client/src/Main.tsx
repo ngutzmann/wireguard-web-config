@@ -1,5 +1,5 @@
 import 'antd/dist/antd.css'
-import * as React from 'react'
+import React from 'react'
 import { Layout, Menu } from 'antd'
 import { grey } from '@ant-design/colors'
 import ApolloClient from 'apollo-boost'
@@ -15,14 +15,16 @@ export const apolloClient = new ApolloClient({
   uri: 'http://localhost:8771/query',
 })
 
-export const Main = () => {
+const GREY_IDX = 0
+
+export const Main: React.FC = () => {
   const serverName = process.env.SERVER_NAME || 'Wireguard Server'
   return (
     <ApolloProvider client={apolloClient}>
       <Router>
         <Layout className="layout">
           <Header>
-            <h1 style={{ color: grey[0] }}>{serverName}</h1>
+            <h1 style={{ color: grey[GREY_IDX] }}>{serverName}</h1>
             <Menu theme="dark" mode="horizontal"></Menu>
           </Header>
           <Content style={{ height: 'calc(100vh - 55px)' }}>

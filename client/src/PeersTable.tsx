@@ -1,18 +1,20 @@
-import * as React from 'react'
-import { Table, Input, Button, Row, Col } from 'antd'
+import React from 'react'
+import { Table, Button, Row, Col } from 'antd'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
+import cloneDeep from 'lodash.clonedeep'
 import { Peer } from './ServerTypes'
-
-const initialState = {
-  searchText: '',
-}
 
 interface PeersData {
   readonly peers: readonly Peer[]
 }
 
+const NO_BYTES = 0
+const DEFAULT_DECIMALS = 2
+const NO_DECIMALS = 0
+const NO_TIME = 0
+const S_TO_MS = 1000
 const GET_PEERS = gql`
   {
     peers {
@@ -30,13 +32,11 @@ const GET_PEERS = gql`
   }
 `
 
-type State = Readonly<typeof initialState>
-
-function formatBytes(bytes: number, decimals = 2): string {
-  if (bytes === 0) return '0 Bytes'
+function formatBytes(bytes: number, decimals = DEFAULT_DECIMALS): string {
+  if (bytes === NO_BYTES) return '0 Bytes'
 
   const k = 1024
-  const dm = decimals < 0 ? 0 : decimals
+  const dm = decimals < NO_DECIMALS ? NO_DECIMALS : decimals
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 
   const i = Math.floor(Math.log(bytes) / Math.log(k))
@@ -45,9 +45,9 @@ function formatBytes(bytes: number, decimals = 2): string {
 }
 
 function formatDate(seconds: number): string {
-  if (seconds === 0) return 'Disconnected'
+  if (seconds === NO_TIME) return 'Disconnected'
 
-  const d = new Date(seconds * 1000)
+  const d = new Date(seconds * S_TO_MS)
   return d.toLocaleString()
 }
 
@@ -57,8 +57,9 @@ function formatUserName(firstName?: string, lastName?: string): string {
   if (lastName === null) return firstName
   return `${firstName} ${lastName}`
 }
-export function PeersTable() {
-  let children: React.ReactChild = null
+
+export const PeersTable: React.FC = () => {
+  let children = null
   const { loading, data, error } = useQuery<PeersData>(GET_PEERS)
   if (loading) children = <p>Loading... </p>
   else if (error) children = <p>Error: {error}</p>
@@ -109,7 +110,7 @@ export function PeersTable() {
           </Col>
         </Row>
         <Table
-          dataSource={peers}
+          dataSource={cloneDeep(peers)}
           columns={columns}
           pagination={false}
           rowKey="publicKey"

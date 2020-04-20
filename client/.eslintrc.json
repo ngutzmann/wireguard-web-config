@@ -18,6 +18,11 @@
     "prettier/@typescript-eslint",
     "plugin:react/recommended"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
@@ -75,7 +80,7 @@
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/prefer-includes": "error",
     "functional/immutable-data": "error",
-    "functional/no-let": "error",
+    "functional/no-let": ["error", { "allowLocalMutation": true }],
     "functional/prefer-readonly-type": "error"
   }
 }
